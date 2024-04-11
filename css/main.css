@@ -1,0 +1,1086 @@
+body {
+	margin: 0;
+	background-color: rgb(127, 171, 229);
+	color: #fff;
+	font-family: Monospace;
+	font-size: 20px;
+	line-height: 24px;
+	overscroll-behavior: none;
+	font-family: "Microsoft YaHei", sans-serif;
+}
+
+.rect {
+	user-select: none;
+}
+
+
+
+input[type="radio"] {
+	width: 20px;
+	height: 20px;
+}
+
+#info {
+	position: absolute;
+	top: 1%;
+	left: 0px;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	z-index: 1;
+	font-family: "Microsoft YaHei", sans-serif;
+	font-size: 50px;
+	color: rgb(5, 65, 133);
+	/* TODO Solve this in HTML */
+}
+
+a,
+button,
+input,
+select {
+	pointer-events: auto;
+}
+
+/* @media all and (max-width: 640px) {
+	.lil-gui.root {
+		right: auto;
+		top: auto;
+		max-height: 50%;
+		max-width: 80%;
+		bottom: 0;
+		left: 0;
+	}
+} */
+
+#overlay {
+	position: absolute;
+	font-size: 16px;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background: rgba(0, 0, 0, 0.7);
+}
+
+#overlay button {
+	background: transparent;
+	border: 0;
+	border: 1px solid rgb(255, 255, 255);
+	border-radius: 4px;
+	color: #ffffff;
+	padding: 12px 18px;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+#notSupported {
+	width: 50%;
+	margin: auto;
+	background-color: rgb(255, 0, 0);
+	margin-top: 20px;
+	padding: 10px;
+}
+
+#myCanvas {
+	position: absolute;
+	bottom: 3.5%;
+	right: 8%;
+	/* width: 80%; */
+}
+
+.bar {
+	fill: steelblue;
+}
+
+.bar:hover {
+	fill: darkorange;
+}
+.axis {
+	position: absolute;
+	left: 80%;
+	stroke: #0b0fd8;
+	font-size: 15px;
+}
+
+.axis-x path {
+	position: absolute;
+	left: 80%;
+	/* stroke: #ccc; */
+	font-size: large;
+}
+
+.axis-x .tick line {
+	stroke: #ddd;
+}
+
+.axis-y path,
+.axis-y .tick line {
+	display: none;
+}
+
+svg {
+	user-select: none;
+	/* 禁止SVG元素及其子元素被选中 */
+	font-family: "Microsoft YaHei", sans-serif;
+	position: relative;
+	left: 15%;
+	width: 85%;
+}
+
+svg rect {
+	fill: rgb(255, 0, 98);
+	stroke-width: 1px;
+	stroke: #f1f1f1;
+}
+
+/* #chart {
+	position: absolute;
+	top: 1%;
+	left: 10%;
+	width: 90%;
+	height: 90%;
+	z-index: 9999;
+} */
+
+.axis text {
+	user-select: none;
+	/* 禁止坐标轴标签文本被选中 */
+}
+
+path {
+	fill: none;
+	stroke: rgb(179, 255, 0);
+	stroke-width: 4px;
+	filter: url(#glow);
+	/* 应用名为glow的滤镜 */
+}
+
+.line {
+	fill: none;
+	stroke: red;
+	stroke-width: 2px;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: #eaeaea;
+	shape-rendering: crispEdges;
+}
+
+#reloadCurve {
+	position: absolute;
+	right: 2%;
+	top: 10%;
+	width: 70px;
+	height: 60px;
+}
+
+#loadPlan {
+	position: absolute;
+	right: 2%;
+	top: 40%;
+	width: 70px;
+	height: 60px;
+}
+
+#savePlan {
+	position: absolute;
+	right: 2%;
+	top: 70%;
+	width: 70px;
+	height: 60px;
+}
+
+#OpacityCanvas {
+	visibility: hidden;
+	position: fixed;
+}
+
+#SanWeiZhanShi {
+	position: fixed;
+	width: 40%;
+	height: 55%;
+	right: 32%;
+	bottom: 35%;
+	border: 2px solid rgb(61, 13, 236);
+}
+
+#ShuJuJianJie {
+	position: absolute;
+	width: 25%;
+	height: 60%;
+	top: 5%;
+	left: 1%;
+	border: 2px solid rgb(0, 88, 188);
+}
+
+#ShuJuJianJie .rect {
+	width: 100%;
+	height: 10%;
+	background-color: rgb(0, 88, 188);
+	position: absolute;
+	top: 0;
+	color: white;
+	font-size: xx-large;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#ShuJuJianJie .yaosu {
+	width: 100%;
+	height: 8%;
+	background-color: rgb(56, 120, 194);
+	border-radius: 5px;
+	position: absolute;
+	top: 10%;
+	left: 0%;
+	color: white;
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#ShuJuJianJie .shijian {
+	width: 22%;
+	height: 8%;
+	background-color: rgb(0, 88, 188);
+	border-radius: 5px;
+	position: absolute;
+	top: 30%;
+	left: 5%;
+	color: white;
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#ShuJuJianJie .kongjian {
+	width: 22%;
+	height: 8%;
+	background-color: rgb(0, 88, 188);
+	border-radius: 5px;
+	position: absolute;
+	top: 46%;
+	left: 5%;
+	color: white;
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#ShuJuJianJie #yaosu-xuanze {
+	width: 50%;
+	height: 8%;
+	position: absolute;
+	top: 15%;
+	left: 40%;
+	color: rgb(0, 88, 188);
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#ShuJuJianJie .kongjian-text {
+	width: 60%;
+	height: 4%;
+	position: absolute;
+	top: 44%;
+	left: 35%;
+	color: rgb(0, 88, 188);
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+}
+
+#day-date {
+	position: absolute;
+	width: 40%;
+	top: 31%;
+	left: 40%;
+	height: 30px;
+	font-size: large;
+}
+
+#day-calendar {
+	position: absolute;
+	width: 40px;
+	top: 31%;
+	right: 5%;
+}
+
+#ShuJuJianJie #quanjutu {
+	position: absolute;
+	bottom: 0%;
+	width: 100%;
+	height: 40%;
+}
+
+#ShuJuJianJie #quanjutu #globalMap {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	bottom: 0%;
+	left: 0%;
+}
+
+#to2D {
+	position: absolute;
+	width: 70px;
+	height: 60px;
+	right: 2%;
+	bottom: 70%;
+}
+
+#inversion {
+	position: absolute;
+	width: 70px;
+	height: 60px;
+	right: 2%;
+	bottom: 50%;
+}
+
+#KongZhiMianBan {
+	position: absolute;
+	width: 98%;
+	height: 40%;
+	bottom: 0%;
+	left: 1%;
+	border: 2px solid rgb(0, 88, 188);
+	
+}
+
+#KongZhiMianBan .rect {
+	width: 100%;
+	height: 10%;
+	background-color: rgb(0, 88, 188);
+	position: absolute;
+	top: 0;
+	color: white;
+	font-size: xx-large;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+.lil-gui {
+	z-index: 2 !important;
+	/* TODO Solve this in HTML */
+}
+
+
+.lil-gui.root {
+	position: absolute;
+	left: 6%;
+	top: 75%;
+	height: 22%;
+	width: 33%;
+	background-color: #1e5fee;
+}
+
+
+#QuanJuKongZhi {
+	position: absolute;
+	width: 30%;
+	height: 72%;
+	bottom: 3%;
+	left: 0.5%;
+	border: 2px solid rgb(0, 88, 188);
+}
+
+#QuanJuKongZhi .rect {
+	width: 10%;
+	height: 100%;
+	background-color: rgb(0, 88, 188);
+	position: absolute;
+	left: 0;
+	color: white;
+	writing-mode: vertical-rl;
+	/* 设置文本垂直排列 */
+	font-size: xx-large;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#quanju-sliders {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 10%;
+}
+
+/* 全局控制滑块相关格式 */
+#quanju-sliders .slider-container .slider {
+	width: 30%;
+	/* top: 20%; */
+	left: 41%;
+	position: absolute;
+	background-color: #f1f1f1;
+	height: 20px;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+#quanju-sliders .slider-container .slider .bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 50%;
+	background-image: linear-gradient(to right, #56e2ec, #6060fd);
+	transition: width 0.2s ease-in-out;
+}
+
+#quanju-sliders .slider-container .slider .bar .ball {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	background-color: rgb(215, 239, 255);
+	border: 1px solid rgb(0, 88, 188);
+	right: -10px;
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+#quanju-sliders .slider-container .slider input {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	opacity: 0;
+	cursor: pointer;
+}
+
+#quanju-sliders .slider-container .slider input:focus+.bar {
+	background-color: #2196F3;
+}
+
+#quanju-sliders .slider-container .slider .min-value,
+#quanju-sliders .slider-container .slider .max-value {
+	position: fixed;
+	font-size: 12px;
+	color: #f30606;
+}
+
+#quanju-sliders .slider-container .min-value {
+	position: absolute;
+	/* top: 15%; */
+	left: 37%;
+	color: rgb(0, 88, 188);
+}
+
+#quanju-sliders .slider-container .max-value {
+	position: absolute;
+	/* top: 15%; */
+	right: 21%;
+	color: rgb(0, 88, 188);
+}
+
+#quanju-sliders .slider-container label {
+	position: absolute;
+	/* top: 15%; */
+	left: 12%;
+	color: rgb(0, 88, 188);
+}
+
+#quanju-sliders .slider-container .editable {
+	position: absolute;
+	background-image: url("../imgs/btn.png");
+	background-size: cover;
+	/* 可选：将图片自适应缩放至容器大小 */
+	width: 50px;
+	height: 28%;
+	right: 6%;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#quanju-sliders .slider-container .plus-sub {
+	position: absolute;
+	right: 0px;
+	display: flex;
+	flex-direction: column;
+}
+
+#quanju-sliders .slider-container .plus-sub .plus {
+	width: 30px;
+	height: 30px;
+}
+
+#quanju-sliders .slider-container .plus-sub .sub {
+	width: 30px;
+	height: 30px;
+}
+
+
+#quanju-sliders .slider-container {
+	display: flex;
+	width: 100%;
+	height: 20%;
+	align-items: center;
+	margin-bottom: 3%;
+}
+
+
+#YanSeKongZhi {
+	position: absolute;
+	width: 47%;
+	height: 72%;
+	bottom: 3%;
+	right: 0.5%;
+	border: 2px solid rgb(0, 88, 188);
+}
+
+#YanSeKongZhi .rect {
+	width: 10%;
+	height: 100%;
+	background-color: rgb(0, 88, 188);
+	position: absolute;
+	left: 0;
+	color: white;
+	writing-mode: vertical-rl;
+	/* 设置文本垂直排列 */
+	font-size: 28px;
+	font-family: Arial, sans-serif;
+
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#FangWeiKongZhi {
+	position: absolute;
+	width: 20%;
+	height: 72%;
+	bottom: 3%;
+	right: 48.5%;
+	border: 2px solid rgb(0, 88, 188);
+}
+
+#FangWeiKongZhi .rect {
+	width: 15%;
+	height: 100%;
+	background-color: rgb(0, 88, 188);
+	position: absolute;
+	left: 0;
+	color: white;
+	writing-mode: vertical-rl;
+	/* 设置文本垂直排列 */
+	font-size: xx-large;
+	font-family: Arial, sans-serif;
+
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+.dark {
+	filter: brightness(50%);
+	/* 将图片的亮度调整为50% */
+}
+
+#left1 {
+	position: absolute;
+	left: 32%;
+	top: 40%;
+}
+
+#left2 {
+	position: absolute;
+	left: 26%;
+	top: 40%;
+}
+
+#left3 {
+	position: absolute;
+	left: 20%;
+	top: 40%;
+}
+
+#right1 {
+	position: absolute;
+	left: 75%;
+	top: 40%;
+}
+
+#right2 {
+	position: absolute;
+	left: 81%;
+	top: 40%;
+}
+
+#right3 {
+	position: absolute;
+	left: 87%;
+	top: 40%;
+}
+
+#up1 {
+	position: absolute;
+	left: 49%;
+	top: 22%;
+}
+
+#up2 {
+	position: absolute;
+	left: 49%;
+	top: 13%;
+}
+
+#up3 {
+	position: absolute;
+	left: 49%;
+	top: 4%;
+}
+
+#down1 {
+	position: absolute;
+	left: 49%;
+	top: 40%;
+}
+
+#down2 {
+	position: absolute;
+	left: 49%;
+	top: 49%;
+}
+
+#down3 {
+	position: absolute;
+	left: 49%;
+	top: 58%;
+}
+
+#shun1 {
+	position: absolute;
+	right: 55%;
+	top: 25%;
+}
+
+#shun2 {
+	position: absolute;
+	right: 55%;
+	top: 15%;
+}
+
+#shun3 {
+	position: absolute;
+	right: 55%;
+	top: 5%;
+}
+
+#ni1 {
+	position: absolute;
+	left: 72%;
+	top: 25%;
+}
+
+#ni2 {
+	position: absolute;
+	left: 72%;
+	top: 15%;
+}
+
+#ni3 {
+	position: absolute;
+	left: 72%;
+	top: 5%;
+}
+
+#zuo {
+	position: absolute;
+	left: 27%;
+	bottom: 2%;
+}
+
+#zheng {
+	position: absolute;
+	left: 50%;
+	bottom: 2%;
+}
+
+#shang {
+	position: absolute;
+	left: 73%;
+	bottom: 2%;
+}
+
+
+
+#QiePianWeiZhiXuanZe {
+	position: absolute;
+	width: 28%;
+	height: 60%;
+	top: 5%;
+	right: 1%;
+	border: 2px solid rgb(0, 88, 188);
+}
+
+#qiepian-sliders .slider-container .plus-sub {
+	position: absolute;
+	right: 0px;
+	display: flex;
+	flex-direction: column;
+}
+
+#qiepian-sliders .slider-container .plus-sub .plus {
+	width: 30px;
+	height: 30px;
+}
+
+#qiepian-sliders .slider-container .plus-sub .sub {
+	width: 30px;
+	height: 30px;
+}
+
+#QiePianWeiZhiXuanZe .rect {
+	width: 100%;
+	height: 10%;
+	background-color: rgb(0, 88, 188);
+	position: absolute;
+	top: 0;
+	color: white;
+	font-size: xx-large;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#qiepian-sliders {
+	position: absolute;
+	width: 100%;
+	height: 50%;
+	top: 10%;
+}
+
+/* 切片选择器相关格式 */
+#qiepian-sliders .slider-container .slider {
+	width: 35%;
+	left: 30%;
+	position: absolute;
+	background-color: #f1f1f1;
+	height: 20px;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+#qiepian-sliders .slider-container .slider .bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 50%;
+	background-image: linear-gradient(to right, #56e2ec, #6060fd);
+	transition: width 0.2s ease-in-out;
+}
+
+#qiepian-sliders .slider-container .slider .bar .ball {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	background-color: rgb(215, 239, 255);
+	border: 1px solid rgb(0, 88, 188);
+	right: -10px;
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+#qiepian-sliders .slider-container .slider input {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	opacity: 0;
+	cursor: pointer;
+}
+
+#qiepian-sliders .slider-container .slider input:focus+.bar {
+	background-color: #2196F3;
+}
+
+#qiepian-sliders .slider-container .slider .min-value,
+#qiepian-sliders .slider-container .slider .max-value {
+	position: fixed;
+	font-size: 12px;
+	color: #f30606;
+}
+
+#qiepian-sliders .slider-container .min-value {
+	position: absolute;
+	left: 17.5%;
+	color: rgb(0, 88, 188);
+	font-size: 20px;
+}
+
+#qiepian-sliders .slider-container .max-value {
+	position: absolute;
+	right: 20%;
+	color: rgb(0, 88, 188);
+	font-size: 20px;
+}
+
+#qiepian-sliders .slider-container label {
+	color: rgb(0, 88, 188);
+}
+
+#qiepian-sliders .slider-container .editable {
+	position: absolute;
+	background-image: url("../imgs/btn.png");
+	background-size: cover;
+	/* 可选：将图片自适应缩放至容器大小 */
+	width: 60px;
+	height: 18%;
+	right: 7%;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+	font-size: 20px;
+}
+
+#qiepian-sliders .slider-container {
+	display: flex;
+	width: 100%;
+	height: 20%;
+	align-items: center;
+}
+
+#heatmap {
+	position: absolute;
+	bottom: 2%;
+	left: 35%;
+	width: 300px;
+	height: 300px;
+}
+
+#zhexian {
+	pointer-events: none;
+	position: absolute;
+	top: 38%;
+	left: 0%;
+}
+#yuqingfenxi {
+	position: absolute;
+	width: 25%;
+	height: 60%;
+	top: 5%;
+	right: 1%;
+	border: 2px solid rgb(0, 88, 188);
+}
+#yuqingfenxi .rect {
+	width: 100%;
+	height: 10%;
+	background-color: rgb(0, 88, 188);
+	position: absolute;
+	top: 0;
+	color: white;
+	font-size: xx-large;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#yuqingfenxi .yaosu {
+	width: 22%;
+	height: 8%;
+	background-color: rgb(0, 88, 188);
+	border-radius: 5px;
+	position: absolute;
+	top: 15%;
+	left: 5%;
+	color: white;
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#yuqingfenxi .shijian {
+	width: 22%;
+	height: 8%;
+	background-color: rgb(0, 88, 188);
+	border-radius: 5px;
+	position: absolute;
+	top: 30%;
+	left: 5%;
+	color: white;
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#yuqingfenxi.kongjian {
+	width: 22%;
+	height: 8%;
+	background-color: rgb(0, 88, 188);
+	border-radius: 5px;
+	position: absolute;
+	top: 46%;
+	left: 5%;
+	color: white;
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#yuqingfenxi #yaosu-xuanze {
+	width: 50%;
+	height: 8%;
+	position: absolute;
+	top: 15%;
+	left: 40%;
+	color: rgb(0, 88, 188);
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	display: flex;
+	/* 将元素设置为flex布局 */
+	justify-content: center;
+	/* 设置flex主轴上的对齐方式为居中对齐 */
+	align-items: center;
+	/* 设置flex侧轴上的对齐方式为居中对齐 */
+	text-align: center;
+	/* 设置文本水平居中 */
+}
+
+#yuqingfenxi .kongjian-text {
+	width: 60%;
+	height: 4%;
+	position: absolute;
+	top: 44%;
+	left: 35%;
+	color: rgb(0, 88, 188);
+	font-size: larger;
+	text-align: center;
+	font-family: Arial, sans-serif;
+}

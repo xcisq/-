@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>海洋要素预报保障系统</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/leaflet.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/examples.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/time.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/Control.MiniMap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/noticejs.css') }}">
+        <style>
+            .noticejs-content {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loading" class="loading" style="z-index:9999; position: fixed; top: 45%; right: 45%; display: none;">
+            <img src="./static_3D/imgs/loading.gif" alt="Loading..." style="width: 160px; pointer-events: none;" />
+        </div>
+        <!--  弹出层  -->
+        <div id="myShadow">
+            <div id="selfShadow">
+                <div id="cursorArea">
+                    <div id="tip"><span>双击三角删除对应颜色</span></div>
+                    <div class="color-arrow" id="topArrow"></div>
+                    <div class="color-arrow" id="bottomArrow"></div>
+                    <div id="colorBar"></div>
+                    <div id="box"></div>
+                </div>
+                <button id="closeBtn" onclick="closeShadow()">x</button>
+            </div>
+        </div>
+        <!-- 地图 -->
+        <div id="map" style="background-color: rgb(164, 205, 255); position: relative;" class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0">
+            <!--  日历控件  -->
+            <div id="calendar">
+                <input type="text" id="showDate" readonly>
+                <div id="chooseDate"></div>
+            </div>
+
+            <!-- 原本的时间轴，具有“播放/暂停”、“点击轴体”等功能，更完善 -->
+            <div id="timePlay" style=""></div>
+
+            <!-- 多要素菜单 -->
+            <div style="position: fixed; left: 15px; top: 15px; z-index: 999; font-family: 'Microsoft YaHei', 微软雅黑, sans-serif!important;">
+                <div class="icons icon-active" id="wind" style="position: relative;">
+                    <img src="{{ url_for('static', filename='imgs/wind1.png') }}" alt="">
+                    <div>海风</div>
+                    <div id="windMenu" class="menu">
+                        <label>
+                            <input type="checkbox" name="magnitude" id="magnitude2"> 预报
+                        </label>
+                        <br>
+                        <label style="display: none;">
+                            <input type="checkbox" name="direction" id="direction2"> 方向
+                            <br>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="animation" id="animation2"> 动画
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 偏差订正  -->
+                <div class="icons" id="biasCorrect" style="position: relative;">
+                    <img src="{{ url_for('static', filename='imgs/biasCorrect.png') }}" alt="">
+                    <div>订正</div>
+                    <div id="correctMenu" class="menu">
+                    </div>
+                </div>
+
+                <div class="icons" id="wave" style="position: relative;">
+                    <img src="{{ url_for('static', filename='imgs/wave.png') }}" alt="">
+                    <div>海浪</div>
+                    <div id="waveMenu" class="menu">
+                        <label>
+                            <input type="checkbox" name="magnitude" id="magnitude1"> 预报
+                        </label>
+                        <br>
+                        <label style="display: none;">
+                            <input type="checkbox" name="direction" id="direction1"> 方向
+                            <br>
+                        </label>
+                        <label style="display: none;">
+                            <input type="checkbox" name="animation" id="animation1"> 动画
+                        </label>
+                    </div>
+                </div>
+    
+                <div class="icons" id="sst" style="position: relative;">
+                    <img src="{{ url_for('static', filename='imgs/sst.png') }}" alt="">
+                    <div>海温</div>
+                    <div id="sstMenu" class="menu" style="display: none;">
+                        <label>
+                            <input type="checkbox" name="magnitude" id="magnitudeSst"> 预报
+                        </label>
+                        <br>
+                        <label style="display: none;">
+                            <input type="checkbox" name="direction" id="directionSst"> 方向
+                            <br>
+                        </label>
+                        <label style="display: none;">
+                            <input type="checkbox" name="animation" id="animationSst"> 动画
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 海面盐度  -->
+                <div class="icons" id="sss" style="position: relative;">
+                    <img src="{{ url_for('static', filename='imgs/sss.png') }}" alt="">
+                    <div>海盐</div>
+                    <div id="sssMenu" class="menu" style="display: none;">
+                        <label>
+                            <input type="checkbox" name="magnitude" id="magnitudeSss"> 预报
+                        </label>
+                        <br>
+                        <label style="display: none;">
+                            <input type="checkbox" name="direction" id="directionSss"> 方向
+                            <br>
+                        </label>
+                        <label style="display: none;">
+                            <input type="checkbox" name="animation" id="animationSss"> 动画
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 选择类型、选择区域  -->
+            <div style="position: fixed; right: 15px; top: 15px; z-index: 999; display: flex;">
+                <!--       选择文件类型，只有“海风”要素需要展示，目前不展示         -->
+                <div id="typeDiv" style="display: none; flex-grow: 1; padding-right: 20px; position: relative; top: 3px">
+                    <label style="font-size: 12px">文件类型：</label>
+                    <select id="type" style="font-size: 12px">
+                        <option value="Uc" selected>Uc</option>
+                        <option value="Grb">Grb</option>
+                    </select>
+                </div>
+
+                <!--  选择预报区域，“海风”和“海浪”需要，目前不展示 -->
+                <div style="display:none; flex-grow: 1; padding-right: 20px; position: relative; top: 3px">
+                    <label style="font-size: 12px">区域：</label>
+                    <select id="region" style="font-size: 12px">
+                        <option value="r1" selected>116.5°E_120°E_18.5°N_22°N</option>
+                        <option value="r2">121.5°E_125°E_19.5°N_23°N</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 开始预报、开始订正、切换平台  -->
+            <div style="position: fixed; right: 15px; top: 15px; z-index: 9999; display: flex; flex-direction: column;">
+                <!-- 开始预报按钮 -->
+                <img id="forecastButton" src="{{ url_for('static', filename='imgs/forecastButton.png') }}" style="cursor: pointer; position: relative;" width="91" height="46">
+                <!-- 开始订正按钮 -->
+                <img id="correctButton" src="{{ url_for('static', filename='imgs/correctButton.png') }}" style="cursor: pointer; position: relative; display: none;" width="91" height="46">
+                <!-- 切换平台按钮 -->
+                <img id="switchButton" src="{{ url_for('static', filename='imgs/switchButton.png') }}" onclick="switch3D(event)" style="cursor: pointer; position: relative;" width="91" height="46">
+            </div>
+
+            <!-- colorbar -->
+            <div id="fixBar">
+                <div class="colorTitle">海风：m/s</div>
+            </div>
+
+            <!-- 地图图层 -->
+            <div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(-294px, 0px, 0px);">
+                <div class="leaflet-pane leaflet-tile-pane"></div>
+                <div class="leaflet-pane leaflet-shadow-pane"></div>
+                <div class="leaflet-pane leaflet-overlay-pane">
+                    <canvas class="leaflet-layer leaflet-zoom-animated" width="1297" height="977" style="transform: translate3d(294px, 0px, 0px); opacity: 0.75;"></canvas>
+                    <canvas class="leaflet-layer leaflet-zoom-animated" width="1297" height="977" style="transform: translate3d(294px, 0px, 0px); opacity: 1;"></canvas>
+                </div>
+                <div class="leaflet-pane leaflet-marker-pane"></div>
+                <div class="leaflet-pane leaflet-tooltip-pane"></div>
+                <div class="leaflet-pane leaflet-popup-pane"></div>
+                <div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(3549.5px, 1760.5px, 0px) scale(8);"></div>
+            </div>
+            <div class="leaflet-control-container">
+                <div class="leaflet-top leaflet-left"></div>
+                <div class="leaflet-top leaflet-right"></div>
+                <div class="leaflet-bottom leaflet-left"></div>
+                <div class="leaflet-bottom leaflet-right"></div>
+            </div>
+        </div>
+        <!-- 左侧缩略地图 -->
+        <div id="leftText" style="position:absolute; bottom:630px; left:265px; z-index:9999; display:none"><h3>H2代</h3></div>
+        <div id="leftMiniMap"></div>
+        <!-- 右侧缩略地图 -->
+        <div id="rightText" style="position:absolute; bottom:630px; right:265px; z-index:9999; display:none"><h3>ERA5</h3></div>
+        <div id="rightMiniMap"></div>
+
+        <script src="{{ url_for('static', filename='js/d3.v4.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/Control.MiniMap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/geotiff.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/chroma.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/time.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/colorPicker.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/switch.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/leaflet.canvaslayer.field.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/notice.js') }}"></script>
+
+    </body>
+</html>

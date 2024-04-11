@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>核污水扩散分析平台</title>
+	<meta charset="utf-8">
+	<!-- <script src="https://d3js.org/d3.v7.min.js"></script> -->
+	<script src="{{ url_for('static', filename='js/d3.v7.min.js') }}"></script>
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+	<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+	<!-- <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script> -->
+	<script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+	<script>mermaid.initialize({startOnLoad:true});</script>	
+	<link type="text/css" rel="stylesheet" href="./static_3D/css/main.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/noticejs.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/button.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/yuqing.css') }}">
+	<style>
+		.noticejs-content {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="info">
+		<b>核污水扩散分析平台</b>
+	</div>
+
+
+
+	<div id="loading" class="loading" style="z-index:9999;position: fixed;top: 40%;left: 45%;display:none;">
+		<img src="./static_3D/imgs/loading.gif" alt="Loading..." style="width:200px;pointer-events: none;" />
+	</div>
+
+	<div id="ShuJuJianJie">
+		<div class="rect">事件</div>
+		<div class="yaosu">事件脉络</div>
+		<div class="mermaid" style="width: 100%; height: 100%;position: absolute; /* 使用绝对定位 */
+		top: 70%; /* 距离顶部的距离 */
+		left: 50%; /* 距离左侧的距离 */
+		transform: translate(-50%, -50%); /* 使元素居中 */">
+			graph LR
+				A[开始] --> B[步骤1]
+				B --> C[步骤2]
+				C --> D[结束]
+			</div>
+		<div class="rect">事件</div>
+	</div>
+	<style>
+
+	
+		#toggleDisplayBtn {
+			position: absolute; /* 绝对定位按钮 */
+			top: 10px; /* 距离容器顶部的距离 */
+			right: 10px; /* 距离容器右边的距离 */
+			z-index: 10; /* 确保按钮位于其他内容之上 */
+		}
+		/* 其他样式保持不变 */
+		#imageDisplay {
+    /* 图片显示区域的尺寸，这需要根据您放置图片的具体方式来定 */
+    width: 100%; /* 或者根据需要设置固定的像素值 */
+    /* 适当的高度，取决于图片或者容器的具体需要 */
+    height: 100px; /* 或者设置为 'auto'，如果您希望它基于内容自动调整 */
+  }
+  #QiePianWeiZhiXuanZe{
+	position: absolute; 
+	top: 0; 
+	left: 0;
+  }
+	</style>
+	<div id="SanWeiZhanShi">
+		<video id="SanWeiVideo" style="width: 100%; height: 100%;" controls>
+			<source src="./static_3D/imgs/diffusion_video4.mp4" type="video/mp4">
+			您的浏览器不支持视频标签。
+		</video>
+		
+		<!-- 控制按钮 -->
+		<button id="toggleDisplayBtn" class="button">时间轴逐帧分析</button>
+	
+		
+
+			<div id="QiePianWeiZhiXuanZe" style="display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+				<div id="timeSliderContainer">
+					<label for="timeSlider">选择日期:</label>
+					<input type="range" id="timeSlider" min="0" value="0">
+					<output id="dateDisplay">2023-08-29</output>
+				</div>
+				
+				<div id="imageDisplay" >
+					<!-- 时间相关的图片将在这里显示 -->
+					<script src="{{ url_for('static', filename='js/time1.js') }}"></script>
+				</div>
+			</div>
+		
+	</div>
+	
+	<script>
+		document.getElementById('toggleDisplayBtn').addEventListener('click', function() {
+    var videoDisplay = document.getElementById('SanWeiVideo');
+    var qiepianDisplay = document.getElementById('QiePianWeiZhiXuanZe');
+    
+    // 检查时间扩散动态显示部分当前是否显示
+    if (qiepianDisplay.style.display === 'block') {
+        qiepianDisplay.style.display = 'none';
+        videoDisplay.style.display = 'block';
+    } else {
+        qiepianDisplay.style.display = 'block';
+        videoDisplay.style.display = 'none';
+    }
+});
+	</script>
+	
+	
+	<div id="KongZhiMianBan">
+		<div class="rect">数据分析</div>
+		<canvas id="myPieChart"style="width: 50% ;height:10px;position: absolute; top: 10%; left: 0%;" ></canvas>
+		<canvas id="myPieChart1"style="width: 10px ;height:10px;position: absolute; top: 10%; left: 25%;" ></canvas>
+		<canvas id="lineChart"style="width: 10px ;height:10px;position: absolute; top: 10%; left: 50%;" ></canvas>
+		<canvas id="lineChart1"style="width: 10px ;height:10px;position: absolute; top: 10%; left: 75%;" ></canvas>
+	</div>
+	<div id="yuqingfenxi">
+		<div class="rect">舆情分析</div>
+    	
+	</div>
+	<canvas id="OpacityCanvas"></canvas> <!-- 仅仅是作为不透明度转换为纹理数据的媒介 -->
+
+	<!-- 定义模块的引入路径 -->
+	<!--	<script type="importmap">-->
+	<!--			{-->
+	<!--				"imports": {-->
+	<!--					"three": "../build/three.module.js",-->
+	<!--					"three/addons/": "./static_3D/jsm/"-->
+	<!--				}-->
+	<!--			}-->
+	<!--		</script>-->
+	<script type="importmap">
+			{
+				"imports": {
+					"three": "./static_3D/build/three.module.js",
+					"three/addons/": "./static_3D/jsm/"
+				}
+			}
+		</script>
+
+	<!-- <script type="module" src="./static_3D/js/cube_v6.js"></script> -->
+	<script src="{{ url_for('static', filename='js/notice.js') }}"></script>
+	<script>
+        // 获取 canvas 元素
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+
+        // 定义数据
+        var data = {
+            labels: ['正面', '中立', '负面'],
+            datasets: [{
+                data: [30, 40, 30], // 数据值
+                backgroundColor: ['green', 'gray', 'red'] // 饼图区块的颜色
+            }]
+        };
+
+        // 配置选项
+        var options = {
+            // 添加其他配置选项，如标题等
+        };
+
+        // 创建饼图
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    </script>	
+	<script>
+        // 获取 canvas 元素
+        var ctx = document.getElementById('myPieChart1').getContext('2d');
+
+        // 定义数据
+        var data = {
+            labels: ['正面', '中立', '负面'],
+            datasets: [{
+                data: [30, 40, 30], // 数据值
+                backgroundColor: ['green', 'gray', 'red'] // 饼图区块的颜色
+            }]
+        };
+
+        // 配置选项
+        var options = {
+            // 添加其他配置选项，如标题等
+        };
+
+        // 创建饼图
+        var myPieChart1 = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    </script>	
+	 <script>
+        // 获取 canvas 元素
+        var ctx = document.getElementById('lineChart').getContext('2d');
+
+        // 定义数据
+        var data = {
+            labels: ['一月', '二月', '三月', '四月', '五月'],
+            datasets: [{
+                label: '销售数据',
+                data: [65, 59, 80, 81, 65], // 数据值
+                borderColor: 'blue', // 折线颜色
+                borderWidth: 1 // 折线宽度
+            }]
+        };
+
+        // 配置选项
+        var options = {
+            // 添加其他配置选项，如标题等
+        };
+
+        // 创建折线图
+        var lineChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: options
+        });
+    </script>
+	<script>
+        // 获取 canvas 元素
+        var ctx = document.getElementById('lineChart1').getContext('2d');
+
+        // 定义数据
+        var data = {
+            labels: ['一月', '二月', '三月', '四月', '五月'],
+            datasets: [{
+                label: '销售数据',
+                data: [65, 60, 80, 81, 65], // 数据值
+                borderColor: 'blue', // 折线颜色
+                borderWidth: 1 // 折线宽度
+            }]
+        };
+
+        // 配置选项
+        var options = {
+            // 添加其他配置选项，如标题等
+        };
+
+        // 创建折线图
+        var lineChart1 = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: options
+        });
+    </script>
+
+</body>
+
+</html>

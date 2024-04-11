@@ -1,0 +1,467 @@
+/* * {
+    margin: 0;
+    padding: 0
+} */
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#calendar{
+  position: absolute;
+  left: 350px;
+  bottom: 14px;
+  z-index: 9999;
+  width: 140px;
+  height: 30px;
+}
+
+#showDate{
+  width: 140px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: rgb(123, 185, 243);
+  font-weight: 700;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+#chooseDate{
+  position: absolute;
+  right: 11px;
+  top: 9px;
+  width: 12px;
+  height: 12px;
+  background-image: url(../imgs/up.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
+
+#timePlay {
+  position: absolute;
+  left: 500px;
+  bottom: 10px;
+  width: 860px !important;
+  height: 38px;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  z-index: 9999;
+  border-radius: 5px;
+}
+
+.timeUnit {
+  position: relative;
+  z-index: 999;
+  float: left;
+  width: 80px;
+  height: 38px;
+  padding: 25px 10px;
+  box-sizing: border-box;
+}
+
+.timeUnit > .inner {
+  width: 650px;
+  height: 100%;
+  border: 2px solid #fff;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-size: 0;
+}
+
+.timeUnitBtn {
+  cursor: pointer;
+  font-size: 14px;
+  width: 28px;
+  line-height: 26px;
+  display: inline-block;
+  text-align: center;
+  box-sizing: border-box;
+  color: #6d6d6d;
+}
+
+.timeUnitBtn.active {
+  background: #fff;
+  color: #333;
+}
+
+.timeUnitBtn:first-of-type {
+  border-right: 1px solid #fff;
+}
+
+.timeUnitBtn:last-of-type {
+  border-left: 1px solid #fff;
+}
+
+#timeMain {
+  position: relative;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.timeControl-box {
+  position: relative;
+  width: 20px;
+  height: 30px;
+  float: left;
+  margin-left: 10px;
+}
+
+.timeControl {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.timeControl.play::after {
+  content: "";
+  border-left: 15px solid #fff;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  display: inline-block;
+}
+
+.timeControl.pause::after {
+  content: "";
+  float: right;
+  width: 5px;
+  height: 16px;
+  margin-top: 3px;
+  margin-right: 1px;
+  background-color: #fff;
+  display: inline-block;
+}
+
+.timeControl.pause::before {
+  content: "";
+  float: left;
+  width: 5px;
+  height: 16px;
+  margin-top: 3px;
+  margin-left: 1px;
+  background-color: #fff;
+  display: inline-block;
+}
+
+.timeProgress-box {
+  position: absolute;
+  left: 45px;
+  top: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.timeProgress-box > .timeProgress-hide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+.timeProgress-inner {
+  position: absolute;
+  height: 40px;
+  top: 0;
+  left: 0;
+  padding-top: 15px;
+  box-sizing: border-box;
+  -webkit-transform: translateX(0px);
+  -moz-transform: translateX(0px);
+  -ms-transform: translateX(0px);
+  -o-transform: translateX(0px);
+  transform: translateX(0px);
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.timeProgress-inner > ul {
+  /* overflow: hidden; */
+  white-space: nowrap;
+  font-size: 0;
+}
+
+.timeProgress-inner > ul > li {
+  width: 72px;
+  margin: 9px 0px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 10px;
+  text-align: center;
+  border-left: 1px solid #fff;
+  box-sizing: border-box;
+  display: inline-block;
+  pointer-events: none;
+}
+
+.timeProgress-inner > ul > li:last-of-type {
+  border-right: 0px solid #fff;
+}
+
+.timeProgress {
+  position: absolute;
+  top: 15px;
+  width: 100%;
+  height: 8px;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.timeProgress-bar {
+  position: absolute;
+  height: 8px;
+  border-radius: 4px;
+  background: #319ade;
+  overflow: visible !important;
+  -webkit-transition: width 0.3s;
+  -moz-transition: width 0.3s;
+  -ms-transition: width 0.3s;
+  -o-transition: width 0.3s;
+  transition: width 0.3s;
+}
+
+.curr-popup {
+  position: absolute;
+  right: 0;
+  bottom: 16px;
+  -webkit-transform: translateX(50%);
+  -moz-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  -o-transform: translateX(50%);
+  transform: translateX(50%);
+  width: 76px;
+  font-size: 12px;
+  line-height: 24px;
+  color: #fff;
+  background-color: #319ade;
+  text-align: center;
+  border-radius: 5px;
+  padding: 1px 4px;
+}
+
+.curr-popup.for-animate {
+  left: 4px;
+  right: none;
+  bottom: 32px;
+  display: none;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.curr-popup.for-click {
+  position: absolute;
+  left: 0;
+  right: none;
+  bottom: 32px;
+  display: none;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.curr-popup::after {
+  content: "";
+  position: absolute;
+  left: 28px;
+  top: 100%;
+  border-top: 8px solid #319ade;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+}
+
+.hover-popup {
+  position: absolute;
+  bottom: 32px;
+  width: 76px;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%);
+  font-size: 12px;
+  line-height: 24px;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  border-radius: 5px;
+  display: none;
+  padding: 1px 4px;
+}
+
+.timeProgress-inner::after {
+  content: "";
+  width: 40px;
+  height: 80px;
+  position: absolute;
+  left: 100%;
+  top: 0;
+}
+
+.hover-popup::after {
+  content: "";
+  position: absolute;
+  left: 28px;
+  top: 100%;
+  border-top: 8px solid #fff;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  opacity: 0.7;
+}
+
+.time-menu-btn {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  font-size: 15px;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.15);
+  right: 20px;
+  top: 25px;
+}
+
+.time-menu-btn:hover {
+  color: #333;
+  background: #fff;
+}
+
+#time-menu {
+  position: fixed;
+  text-align: center;
+  line-height: 38px;
+  right: 10px;
+  bottom: 95px;
+  color: #fff;
+  display: none;
+}
+
+#time-menu span {
+  font-size: 34px;
+  color: #fff;
+  line-height: 53px;
+  cursor: pointer;
+}
+
+#time-speed {
+  position: fixed;
+  width: 100px;
+  right: 80px;
+  bottom: 90px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding: 10px 0px;
+  display: none;
+}
+
+#time-speed ul li {
+  line-height: 35px;
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+
+#time-speed ul .active {
+  color: #fff;
+  background-color: #333333;
+}
+
+.time-speed-btn {
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  font-size: 15px;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.15);
+  position: absolute;
+  right: 80px;
+  top: 25px;
+}
+
+.time-speed-btn:hover {
+  color: #333;
+  background: #fff;
+}
+
+.time-speed-active {
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  font-size: 15px;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #333333;
+  position: absolute;
+  right: 80px;
+  top: 25px;
+}
+
+#time-speed:after {
+  position: absolute;
+  bottom: -10px;
+  right: 20px;
+  display: inline-block;
+  border-right: 10px solid transparent;
+  border-top: 10px solid rgba(0, 0, 0, 0.3);
+  border-left: 10px solid transparent;
+  content: "";
+}
+
+#taskList li {
+  cursor: pointer;
+  height: 28px;
+  line-height: 28px;
+}
+
+#taskList li span {
+  height: 24px;
+  line-height: 24px;
+  margin-left: 4px;
+}
+
+#taskList li.active {
+  background-color: black;
+}
+
+li.task-item {
+  padding: 2px 4px;
+}
+
+.rod-item:last-child {
+  border-left: 1px solid #fff;
+  border-right: 1px solid #fff;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.rod-item:not(:last-child) {
+  border-left: 1px solid #fff;
+  text-align: left;
+  padding-left: 8px;
+}

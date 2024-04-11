@@ -1,0 +1,40 @@
+#timeSliderContainer {
+    display: flex; /* 使用弹性盒模型 */
+    flex-direction: column; /* 子元素垂直排列 */
+    justify-content: center; /* 在主轴方向上居中（这里是垂直） */
+    align-items: center; /* 在交叉轴方向上居中（这里是水平） */
+    width: 100%; /* 滑块容器宽度设置为100% */
+    margin-top: 20px; /* 如有必要，可调整距离顶部的距离 */
+  }
+  
+  #timeSlider {
+    -webkit-appearance: none; /* 为了兼容webkit浏览器移除默认样式 */
+    width: 60%; /* 根据您的设计调整滑块的宽度 */
+    margin: 10px 0; /* 上下留出空间 */
+  }
+  
+  #timeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #007BFF;
+  }
+  
+  #timeSlider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border: none;
+    border-radius: 50%;
+    background: #007BFF;
+  }
+  
+  #dateDisplay {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 10px 0; /* 日期显示和滑块之间的空间 */
+  }
+  
